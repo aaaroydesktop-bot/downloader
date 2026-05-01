@@ -37,7 +37,7 @@ async def extract_media(request: LinkRequest):
         'quiet': True,
         'noplaylist': True,
         'geo_bypass': True,
-        # 'cookiefile': 'cookies.txt',  <-- এই লাইনটি মুছে দিন বা এভাবে কমেন্ট করে দিন
+        'cookiefile': 'cookies.txt', 
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
