@@ -33,11 +33,24 @@ async def extract_media(request: LinkRequest):
     # 🔥 UPDATED yt-dlp config (IMPORTANT FIX)
 # 🔥 UPDATED yt-dlp config (IMPORTANT FIX)
     ydl_opts = {
-        'format': 'best[ext=mp4]',
+        'format': 'bestvideo+bestaudio/best',
         'quiet': True,
         'noplaylist': True,
         'geo_bypass': True,
-        'cookiefile': 'cookies.txt', 
+        'nocheckcertificate': True,
+        'ignoreerrors': True,
+
+        # 🔥 VERY IMPORTANT (YouTube FIX)
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['android', 'web']
+            }
+        },
+
+        # 🔥 Force headers (anti-block)
+        'http_headers': {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+        }
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
