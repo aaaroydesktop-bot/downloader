@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, HttpUrl
 import yt_dlp
 import logging
-import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -33,24 +32,11 @@ async def extract_media(request: LinkRequest):
     # 🔥 UPDATED yt-dlp config (IMPORTANT FIX)
 # 🔥 UPDATED yt-dlp config (IMPORTANT FIX)
     ydl_opts = {
-        'format': 'bestvideo+bestaudio/best',
+        'format': 'best[ext=mp4]',
         'quiet': True,
         'noplaylist': True,
         'geo_bypass': True,
-        'nocheckcertificate': True,
-        'ignoreerrors': True,
-
-        # 🔥 VERY IMPORTANT (YouTube FIX)
-        'extractor_args': {
-            'youtube': {
-                'player_client': ['android', 'web']
-            }
-        },
-
-        # 🔥 Force headers (anti-block)
-        'http_headers': {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-        }
+        # 'cookiefile': 'cookies.txt',  <-- এই লাইনটি মুছে দিন বা এভাবে কমেন্ট করে দিন
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -126,4 +112,4 @@ def health():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
+    uvicorn.run(app, host="0.0.0.0", port=8000)
